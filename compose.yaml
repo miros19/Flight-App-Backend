@@ -1,0 +1,25 @@
+services:
+  db:
+    container_name: db
+    image: "postgres:15.8"
+    ports:
+      - 5432:5432
+    environment:
+      - PGUSER=pguser
+      - PGPASSWORD=pgpassword
+      - PGDATABASE=pgdb
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_DB=pgdb
+    volumes:
+      - ./postgres/db-data/:/var/lib/postgresql/data/
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d
+  backend:
+    container_name: backend
+    build: .
+    volumes:
+      - ./backend:/src
+    ports:
+      - 9999:9999
+    depends_on:
+      - db
