@@ -1,10 +1,6 @@
-from fastapi import APIRouter, HTTPException, Path
-from fastapi import Depends
+from fastapi import APIRouter, Depends
 from config import SessionLocal
 from sqlalchemy.orm import Session
-from fastapi.responses import JSONResponse
-
-from schemas import Response
 
 import db_operations as db_op
 

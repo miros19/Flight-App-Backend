@@ -3,10 +3,9 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.background import BackgroundScheduler
 from config import SessionLocal, engine
 from data_generator import DataGenerator
-import db_operations as db_ops
+import db_operations as db_op
 import models
 from routes import router
-from sqlalchemy.orm import Session
 
 generator = DataGenerator()
 
@@ -22,7 +21,7 @@ def generate_frames():
     frames = generator.generate_frames()
     with SessionLocal.begin() as db:
         for frame in frames:
-            db_ops.new_frame(db = db, frame= frame)
+            db_op.new_frame(db = db, frame= frame)
         db.commit()
 
 @asynccontextmanager
@@ -37,7 +36,3 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI(lifespan = lifespan)
 
 app.include_router(router)
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
